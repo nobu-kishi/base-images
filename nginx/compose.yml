@@ -1,0 +1,17 @@
+services:
+  reverse-proxy:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "${NGINX_HOST_PORT:-8080}:80"
+    # ログ時刻を日本時間に設定
+    environment:
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
