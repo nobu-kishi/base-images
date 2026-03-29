@@ -7,7 +7,5 @@ services:
     environment:
       - TZ=Asia/Tokyo
     volumes:
-      # ドキュメントルート
       - ./htdocs:/usr/local/apache2/htdocs
-      # アクセスログ
       - ./logs/:/usr/local/apache2/logs
