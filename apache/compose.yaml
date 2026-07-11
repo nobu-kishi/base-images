@@ -9,3 +9,9 @@ services:
     volumes:
       - ./htdocs:/usr/local/apache2/htdocs
       - ./logs/:/usr/local/apache2/logs
+      - ./conf/httpd.conf:/usr/local/apache2/conf/extra/httpd-custom.conf:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

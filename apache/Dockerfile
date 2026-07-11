@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 # https://gallery.ecr.aws/docker/library/httpd
-# alpineタグを指定しないことでDebianベースイメージを使用
 FROM public.ecr.aws/docker/library/httpd:2.4.65
 
-# 必要に応じて、Apache用の設定ファイルを上書き
-# COPY .conf/httpd.conf /etc/httpd/conf/httpd.conf
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends curl
+
+COPY conf/httpd.conf /usr/local/apache2/conf/extra/httpd-custom.conf
+RUN echo "Include conf/extra/httpd-custom.conf" >> /usr/local/apache2/conf/httpd.conf
 
 EXPOSE 80
-
-ENTRYPOINT ["httpd"]
-CMD ["-D", "FOREGROUND"]
