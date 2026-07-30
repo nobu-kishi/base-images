@@ -1,0 +1,15 @@
+services:
+  code-server:
+    build:
+      context: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - code-server-config:/home/coder/.config
+      - code-server-data:/home/coder/.local/share/code-server
+      - ${WORKSPACE_DIR:-.}:/home/coder/workspace
+    restart: unless-stopped
+
+volumes:
+  code-server-config:
+  code-server-data:
